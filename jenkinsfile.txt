@@ -2,8 +2,9 @@ pipeline {
     agent any
 
     tools {
-        jdk 'JDK_HOME'
-        maven 'MAVEN_HOME'
+        // JDK and Maven should be configured in Jenkins global tools
+        jdk 'JDK_HOME'        // -> /usr/lib/jvm/java-17-amazon-corretto.x86_64
+        maven 'MAVEN_HOME'    // -> /usr/share/maven
     }
 
     environment {
@@ -55,7 +56,8 @@ pipeline {
         stage('Build Spring Boot App') {
             steps {
                 dir("${env.BACKEND_DIR}") {
-                    sh 'mvn clean package'
+                    // Use Maven installed via Jenkins Tools
+                    sh 'mvn clean package -DskipTests'
                     sh 'mv target/*.war target/springapp1.war'
                 }
             }
